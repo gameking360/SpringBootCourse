@@ -1,12 +1,18 @@
 package Labes.Curso.Models;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -34,14 +40,15 @@ public class User {
     private String username;
 
     
+    @JsonProperty(access = Access.WRITE_ONLY)
     @Column(name = "password", nullable = false,length = 60)
     @NotNull(groups = {CreateUser.class,UpdateUser.class})
     @NotEmpty(groups = {CreateUser.class,UpdateUser.class})
     @Size(min = 8,max = 60, groups = {CreateUser.class,UpdateUser.class})
     private String password;
 
-
-    //private List<Task> tasks = new ArrayList<Task>();
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks = new ArrayList<Task>();
 
     public User(){}
 
@@ -68,14 +75,23 @@ public class User {
         this.username = username;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
 @Override
 public boolean equals(Object obj) {
     
     if(obj == this) return true;
 
+    if( obj == null) return false;
+
     if ( !(obj instanceof User)) return false;
 
-    if( obj == null) return false;
 
     User user = (User) obj;
 
