@@ -6,19 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import Labes.Curso.Models.User;
-import Labes.Curso.Repositories.TaskRepository;
 import Labes.Curso.Repositories.UserRepository;
 import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
     
+    //Usar isso para instaciar e fazer as conexões necessárias
     @Autowired
     private UserRepository userRepository;
     
-    //Usar isso para instaciar e fazer as conexões necessárias
-    @Autowired
-    private TaskRepository taskRepository;
 
     public User findById(Long id){
         //Optional indica que se não existir, ele será vazio
@@ -34,7 +31,6 @@ public class UserService {
     public User creaUser(User obj){
         obj.setId(null);
         obj = this.userRepository.save(obj);
-        this.taskRepository.saveAll(obj.getTasks());
 
         return obj;
     }
@@ -55,7 +51,7 @@ public class UserService {
         try{
             this.userRepository.deleteById(id);
         }catch(Exception ex){
-            throw new RuntimeException("Não é possível excluir, pois há entidades relacionadas");
+            throw new RuntimeException("Não é possível excluir, pois há entidades relacionadas.");
         }
         
     
