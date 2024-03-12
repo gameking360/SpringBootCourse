@@ -12,7 +12,7 @@ import Labes.Curso.Models.Task;
 public interface TaskRepository extends JpaRepository<Task,Long> {
     
 
-    //List<Task> findByUser_Id(Long id);
+    List<Task> findByUser_Id(Long id);
 
     // @Query(value = "SELECT t FROM TASK t WHERE t.user.id = :id")
     // List<Task> findByUser_Id(@Param("id") Long id);

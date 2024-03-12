@@ -1,5 +1,6 @@
 package Labes.Curso.Services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class TaskService {
         return task.orElseThrow( () -> new RuntimeException(
             "Task não encontrada. \nId: " + id + "\nTipo: " + task.getClass().getName()
             ));
+    }
+
+    public List<Task> findAllByUserId(Long id){
+        List<Task> tasks = this.taskRepository.findByUser_Id(id);
+        return tasks;
     }
 
     @Transactional
