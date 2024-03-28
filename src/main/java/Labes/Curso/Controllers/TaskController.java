@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import Labes.Curso.Models.Task;
 import Labes.Curso.Services.TaskService;
+import Labes.Curso.Services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,6 +30,9 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id){
         Task obj = this.taskService.findById(id);
@@ -38,6 +42,7 @@ public class TaskController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Task>> getAllTasksByUserId(@PathVariable Long userId){
+        userService.findById(userId);
         List<Task> objs = this.taskService.findAllByUserId(userId);
 
         return ResponseEntity.ok().body(objs);
