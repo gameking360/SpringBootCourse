@@ -1,10 +1,8 @@
 package Labes.Curso.Models;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -18,9 +16,19 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = User.TABLE_NAME)
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
 public class User {
     public interface CreateUser{}
 
@@ -49,68 +57,8 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
+    @JsonProperty(access = Access.WRITE_ONLY)
     private List<Task> tasks = new ArrayList<Task>();
 
-    public User(){}
-
-    public User(long id, String username, String password){
-        this.id = id;
-        this.password = password;
-        this.username = username;
-    }
-
-
-    public long getId() {
-        return id;
-    }
-    public void setId(Long id){
-        this.id = id;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    @JsonIgnore
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-@Override
-public boolean equals(Object obj) {
     
-    if(obj == this) return true;
-
-    if( obj == null) return false;
-
-    if ( !(obj instanceof User)) return false;
-
-
-    User user = (User) obj;
-
-    return Objects.equals(id,user.id) && Objects.equals(username, user.getUsername()) && Objects.equals(password, user.password     );
-}
-
-@Override
-public int hashCode() {
-    
-    final int prime = 31;
-    int result = 1;
-
-    result = prime * result + (this.id == null ? 0 : this.id.hashCode() ) ; 
-
-    return result;
-}
 }
